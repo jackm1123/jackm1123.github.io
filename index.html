@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <link rel="icon" href="https://www.pngitem.com/pimgs/m/58-588414_png-lifting-weights-icon-weight-lifting-transparent-png.png">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Chartist</title>
+        <title>Weightlift Progress</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="https://rawgit.com/gionkunz/chartist-js/master/dist/chartist.min.css">
         <style>
@@ -19,8 +20,23 @@
         /* change series colors with this, just replace a with b and so on and specify the color. note below series 0,1,2,3 etc.
         where it's change as well for the legend purposes */
         .ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
-		    stroke: #0000ff;
-		}
+		    stroke: #F75590;
+		    }
+
+        .ct-series-b .ct-bar, .ct-series-b .ct-line, .ct-series-b .ct-point, .ct-series-b .ct-slice-donut {
+        stroke: #81C14B;
+        }
+
+        .ct-series-c .ct-bar, .ct-series-c .ct-line, .ct-series-c .ct-point, .ct-series-c .ct-slice-donut {
+        stroke: #FF6700;
+        }
+
+        .ct-series-d .ct-bar, .ct-series-d .ct-line, .ct-series-d .ct-point, .ct-series-d .ct-slice-donut {
+        stroke: #7DBBC3;
+        }
+
+
+
        .ct-chart {
            position: relative;
        }
@@ -60,20 +76,20 @@
            margin: 0;
        }
        .ct-legend .ct-series-0:before {
-           background-color: #0000ff;
-           border-color: #0000ff;
+           background-color: #F75590;
+           border-color: #F75590;
        }
        .ct-legend .ct-series-1:before {
-           background-color: #f05b4f;
-           border-color: #f05b4f;
+           background-color: #81C14B;
+           border-color: #81C14B;
        }
        .ct-legend .ct-series-2:before {
-           background-color: #f4c63d;
-           border-color: #f4c63d;
+           background-color: #FF6700;
+           border-color: #FF6700;
        }
        .ct-legend .ct-series-3:before {
-           background-color: #d17905;
-           border-color: #d17905;
+           background-color: #7DBBC3;
+           border-color: #7DBBC3;
        }
        .ct-legend .ct-series-4:before {
            background-color: #453d3f;
@@ -81,13 +97,13 @@
        }
        
        .ct-chart-line-multipleseries .ct-legend .ct-series-0:before {
-           background-color: #0000ff;
-           border-color: #0000ff;
+           background-color: #F75590;
+           border-color: #F75590;
        }
        
        .ct-chart-line-multipleseries .ct-legend .ct-series-1:before {
-           background-color: #f4c63d;
-           border-color: #f4c63d;
+           background-color: #FF6700;
+           border-color: #FF6700;
        }
        
        .ct-chart-line-multipleseries .ct-legend li.inactive:before {
@@ -169,7 +185,7 @@
        }
 
        .javascript.hljs .hljs-atom,.javascript.hljs .hljs-number {
-             color: #F4C63D
+             color: #FF6700
        }
 
        .cm-s-3024-day .hljs-attribute,.javascript.hljs .hljs-property {
@@ -177,12 +193,12 @@
        }
 
        .javascript.hljs .hljs-keyword {
-             color: #F05B4F;
+             color: #81C14B;
              font-weight: 700
        }
 
        .javascript.hljs .hljs-string {
-             color: #F4C63D
+             color: #FF6700
        }
 
        .javascript.hljs .hljs-variable {
@@ -198,21 +214,21 @@
        }
 
        .javascript.hljs .hljs-tag {
-             color: #F05B4F;
+             color: #81C14B;
              font-weight: 700
        }
 
        .javascript.hljs .hljs-link {
-             color: #F4C63D
+             color: #FF6700
        }
 
        .javascript.hljs .hljs-error{
-             background-color: #F05B4F;
+             background-color: #81C14B;
              color: #453D3F
        }
 
        .javascript.hljs .hljs-literal{
-             color: #F05B4F;
+             color: #81C14B;
        }
 
        .javascript.hljs .CodeMirror-activeline-background {
@@ -236,7 +252,6 @@
 
     </head>
     <body>
-    	Next ill do percentage improvement chart and selectable
         <div class="ct-chart" id="chart"></div>
         
         <script>
@@ -257,7 +272,7 @@
 			},
 			plugins: [
 		        Chartist.plugins.legend({
-		            legendNames: ['Blue pill', 'Red pill', 'Purple pill', 'Orange'],
+		            legendNames: ['Bench Press', 'Squat', 'Shoulder Press', 'Weight'],
 		        })
 		    ],
 			lineSmooth: Chartist.Interpolation.cardinal({
