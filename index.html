@@ -521,11 +521,12 @@
 
         /* ANIMATION SECTION */
         var seq = 0,
-    		delays = 5,
-    		durations = 500;
+    		delays = 2,
+    		durations = 200;
 
     		// Once the chart is fully created we reset the sequence
     		chart.on('created', function() {
+          console.log('created')
     			seq = 0;
     		});
 
@@ -537,7 +538,7 @@
     				data.element.animate({
     			  		opacity: {
     					    // The delay when we like to start the animation
-    					    begin: seq * delays + 1000,
+    					    begin: seq * delays,
     					    // Duration of the animation
     					    dur: durations,
     					    // The value where the animation should start
@@ -623,6 +624,13 @@
     				data.element.animate(animations);
       			}
     		});
+
+
+        // the problem with the created and draw event listeners is that they refresh and redraw the chart on every 
+        // screen resize and sometimes scrolling. so we remove the listeners on the chart and leave it in its final state
+        // we do this after the drawing has finished so set a 3 second timeout before removing drawing abilities
+        // might have to be longer (in case the cors herokuapp takes forever)
+        setTimeout(function(){ chart.off('created'); chart.off('draw');}, 3000);
         </script>
 
 
