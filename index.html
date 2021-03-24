@@ -382,20 +382,51 @@
           return result;
         }
 
+        function tableToJson(table) {
+          // this is not intuitive, there are extra header rows and crap
+          var data = [];
+          var headers = [];
+          //first th row in table we don't need
+          for (var i=1; i<table.rows[1].cells.length; i++) {
+            header = table.rows[1].cells[i].innerText;
+            headers.push(header);
+          }
+          // first th useless row, second row is headers, start third row
+          for (var i=2; i<table.rows.length; i++) {
+            var tableRow = table.rows[i];
+            var rowData = {};
+            for (var j=1; j<tableRow.cells.length; j++) {
+              //these rows have the useless row number as an entry to offset by 1
+              rowData[ headers[j-1] ] = tableRow.cells[j].innerText;
+            } 
+            data.push(rowData);
+          }
+          return data; 
+        }
+
         // use a cors header proxy and get the csv i published
         const proxyurl = "https://cors-anywhere.herokuapp.com/";
+        const proxyurl2 = "https://api.allorigins.win/get?url=";
         const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgea157RpJMjcWTrTX_nanhQ0dtVBaXvehQmxYojLgRoUMV_hQZ5JfVrTdCcCT520kSTTh891Q89YD/pub?gid=719380801&single=true&output=csv"; 
+        
         // site that doesn’t send Access-Control-*
-        fetch(proxyurl + url) // https://cors-anywhere.herokuapp.com/https://example.com
+        fetch(proxyurl2 + url) // https://cors-anywhere.herokuapp.com/https://example.com
         .then(response => response.text())
         .then(
           function(contents) {
             // this is where we do everything
+            
+            // two diff ways of cors avoidance
+            // proxyurl and csvJSON = cors-anywhere
+            // proxyurl2 and tableToJson = allorigins
+            var parser = new DOMParser();
+            cont = tableToJson(parser.parseFromString(contents, "text/html").getElementsByTagName("table")[0])
+            //var cont = csvJSON(contents);
 
-            var cont = csvJSON(contents);
             console.log(cont);
             bw = cont[cont.length - 1].BodyWeight
             console.log(typeof(bw))
+            console.log(bw)
             document.getElementById("bodyweight").innerText = bw;
 
             var benchpresses = []
@@ -440,6 +471,7 @@
             curr_shoulder_max = null
 
             curr_obj  = {}
+            console.log(arr[0])
             curr_date = arr[0]['Start Date (UTC)']
             curr_obj.bodyweight = arr[0]['BodyWeight']
             curr_obj.date = arr[0]['Start Date (UTC)']
