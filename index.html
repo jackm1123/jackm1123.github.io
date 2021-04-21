@@ -7,16 +7,25 @@
         <title>Weightlift Progress</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="https://rawgit.com/gionkunz/chartist-js/master/dist/chartist.min.css">
-        <style>
-            #chart {
-                height: 300px;
-                width: 100%;
-            }
-        </style>
         <script type="text/javascript" src="https://rawgit.com/gionkunz/chartist-js/master/dist/chartist.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chartist-plugin-legend/0.6.2/chartist-plugin-legend.min.js"></script>
 
         <style>
+          #chart {
+                height: 300px;
+                width: 100%;
+            }
+          /*
+            to do:
+            get rid of the useless css
+            factor out variables for my 4 colors
+            make util classes and the main methods
+          */
+
+
+
+
+
         /* change series colors with this, just replace a with b and so on and specify the color. note below series 0,1,2,3 etc.
         where it's change as well for the legend purposes */
         .ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
