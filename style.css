@@ -1,0 +1,161 @@
+:root {
+    --background: #EADBC4;
+    --color1: #F75590;
+    --color2: #81C14B;
+    --color3: #FF6700;
+    --color4: #7DBBC3;
+}
+
+  /* Chart styling */
+
+#chart {
+    height: 300px;
+    width: 100%;
+}
+
+.ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
+    stroke: var(--color1);
+}
+
+.ct-series-b .ct-bar, .ct-series-b .ct-line, .ct-series-b .ct-point, .ct-series-b .ct-slice-donut {
+    stroke: var(--color2);
+}
+
+.ct-series-c .ct-bar, .ct-series-c .ct-line, .ct-series-c .ct-point, .ct-series-c .ct-slice-donut {
+    stroke: var(--color3);
+}
+
+.ct-series-d .ct-bar, .ct-series-d .ct-line, .ct-series-d .ct-point, .ct-series-d .ct-slice-donut {
+    stroke: var(--color4);
+}
+
+.ct-chart {
+    position: relative;
+}
+
+.ct-legend {
+    position: relative;
+    z-index: 10;
+    list-style: none;
+    text-align: center;
+}
+
+.ct-legend li {
+    position: relative;
+    padding-left: 23px;
+    margin-right: 10px;
+    margin-bottom: 3px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.ct-legend li:before {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    left: 0;
+    content: '';
+    border: 3px solid transparent;
+    border-radius: 2px;
+}
+
+.ct-legend li.inactive:before {
+    background: transparent;
+}
+
+.ct-legend.ct-legend-inside {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.ct-legend.ct-legend-inside li{
+    display: block;
+    margin: 0;
+}
+
+.ct-legend .ct-series-0:before {
+    background-color: var(--color1);
+    border-color: var(--color1);
+}
+
+.ct-legend .ct-series-1:before {
+    background-color: var(--color2);
+    border-color: var(--color2);
+}
+
+.ct-legend .ct-series-2:before {
+    background-color: var(--color3);
+    border-color: var(--color3);
+}
+
+.ct-legend .ct-series-3:before {
+    background-color: var(--color4);
+    border-color: var(--color4);
+}
+
+/* Page styling */
+
+body {
+    background:var(--background);
+    line-height: 1.54;
+    background-position: 50% 50%;
+    font-family:'Helvetica';
+    text-align: center;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Create four equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 25%;
+    padding: 10px;
+}
+
+/* Create four equal columns that floats next to each other */
+.column1 {
+    background-color: var(--color1);
+}
+
+.column2 {
+    background-color: var(--color2);
+}
+
+.column3 {
+    background-color: var(--color3);
+}
+
+.column4 {
+    background-color: var(--color4);
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media screen and (max-width: 900px) {
+    .column {
+        width: 50%;
+    }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+    .column {
+        width: 100%;
+    }
+}
+
+/* Padding */
+.gap { 
+    background:none;
+    height:75px;
+    display:inline-block;
+}
