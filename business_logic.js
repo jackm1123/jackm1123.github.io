@@ -1,6 +1,5 @@
 // TODO:
-// fix the time series to be like 02/03 or only say feb on the first of the month or something
-// still need a simple util method that converts dates_and_maxes to an object with a bunch of arrays and looks like the dummy data
+// May need to reformat dates to be a bit neater
 
 /* UTILITIES */
 
@@ -118,9 +117,46 @@ function tableToJson(table) {
     }
     return data; 
 }
+
+// After we generate an array of objects each representing a workout, convert to series a chartist graph understands
+function objects_to_series(object_array) {
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+    let labels = [];
+    let bench = [];
+    let squat = [];
+    let shoulder_press = [];
+    let weight = [];
+
+    for (entry of object_array) {
+        let dt = new Date(entry.date);
+        labels.push(months[dt.getMonth()] + " " + dt.getDate().toString());
+        bench.push(entry.bench_max);
+        squat.push(entry.squat_max);
+        shoulder_press.push(entry.shoulder_max);
+        weight.push(entry.bodyweight);
+    }
+    return {
+        labels: labels,
+        series: [bench, squat, shoulder_press, weight]
+    }
+    // format of data
+    /*
+    dummy_data = {
+        labels: ['3 Feb', 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+        series: [
+            [5, 5, 10, 8, 7, 5, 4, null, null, null, 10, 10, 7, 8, 6, 9, null, null, 8, 5, 6, 10,  11, 11, 11],
+            [10, 15, null, 12, null, 10, 12, 15, null, null, 12, null, 14, null, null, null, 15, 15, 16, 17, null, null, 18, 19, 20],
+            [null, null, null, null, 3, 4, 1, 3, 4,  6,  7,  9, 5, null, null, null, null, 6, 6, 5, 4, 5, 4, null, 8],
+            [null, 15, null, 13, 17, 11, 12, 11, null, null, null, 17, 17, null, null, null, 18, 19, 20, 21, 22, 22, 21, 20, null]
+        ]
+    };
+    */
+}
+
 /* END UTILITIES */
 
-// Return a promise to fetch the csv data, parse the csv data and make graphable
+// Return a promise to fetch thearse csv data, parse the csv data and make graphable
 function fetch_data() {
     // use a cors header proxy to get the google sheets csv
     const proxy = "https://api.allorigins.win/get?url=";
@@ -169,7 +205,7 @@ function fetch_data() {
             let curr_shoulder_max = null;
             let curr_obj  = {};
             let curr_date = arr[0]['Start Date (UTC)'];
-            curr_obj.bodyweight = arr[0]['BodyWeight'];
+            curr_obj.bodyweight = parseFloat(arr[0]['BodyWeight']);
             curr_obj.date = arr[0]['Start Date (UTC)'];
             curr_obj.bench_max = curr_bench_max;
             curr_obj.squat_max = curr_squat_max;
@@ -199,7 +235,7 @@ function fetch_data() {
                     curr_date = elem['Start Date (UTC)'];
                     curr_obj  = {};
                     curr_obj.date = curr_date;
-                    curr_obj.bodyweight = elem.BodyWeight;
+                    curr_obj.bodyweight = parseFloat(elem.BodyWeight);
                     curr_obj.bench_max = null;
                     curr_obj.squat_max = null;
                     curr_obj.shoulder_max = null;
@@ -216,18 +252,9 @@ function fetch_data() {
             dates_and_maxes.push(curr_obj);
             console.log("data parsed:");
             console.log(dates_and_maxes);
+            console.log(objects_to_series(dates_and_maxes));
 
-            // normally return dates_and_maxes
-            dummy_data = {
-                labels: ['3 Feb', 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
-                series: [
-                    [5, 5, 10, 8, 7, 5, 4, null, null, null, 10, 10, 7, 8, 6, 9, null, null, 8, 5, 6, 10,  11, 11, 11],
-                    [10, 15, null, 12, null, 10, 12, 15, null, null, 12, null, 14, null, null, null, 15, 15, 16, 17, null, null, 18, 19, 20],
-                    [null, null, null, null, 3, 4, 1, 3, 4,  6,  7,  9, 5, null, null, null, null, 6, 6, 5, 4, 5, 4, null, 8],
-                    [null, 15, null, 13, 17, 11, 12, 11, null, null, null, 17, 17, null, null, null, 18, 19, 20, 21, 22, 22, 21, 20, null]
-                ]
-            };
-            return dummy_data;
+            return objects_to_series(dates_and_maxes);
         })
 }
 
