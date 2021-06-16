@@ -273,7 +273,7 @@ async function chart_and_animate() {
         lineSmooth: Chartist.Interpolation.cardinal({
             fillHoles: true,
         }),
-        low: 0
+        low: 75
     };
 
     var data = await fetch_data();
