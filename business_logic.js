@@ -154,6 +154,26 @@ function objects_to_series(object_array) {
     */
 }
 
+function fill_in_gaps(objs_series) {
+
+    for (let i = 1; i < objs_series["series"][0].length; i++) {
+        if (objs_series["series"][0][i] === null) {
+            objs_series["series"][0][i] = objs_series["series"][0][i - 1]
+        }
+        if (objs_series["series"][1][i] === null) {
+            objs_series["series"][1][i] = objs_series["series"][1][i - 1]
+        }
+        if (objs_series["series"][2][i] === null) {
+            objs_series["series"][2][i] = objs_series["series"][2][i - 1]
+        }
+        if (objs_series["series"][3][i] === null) {
+            objs_series["series"][3][i] = objs_series["series"][3][i - 1]
+        }
+    }
+    
+    return objs_series
+}
+
 /* END UTILITIES */
 
 // Return a promise to fetch thearse csv data, parse the csv data and make graphable
@@ -254,7 +274,7 @@ function fetch_data() {
             console.log(dates_and_maxes);
             console.log(objects_to_series(dates_and_maxes));
 
-            return objects_to_series(dates_and_maxes);
+            return fill_in_gaps(objects_to_series(dates_and_maxes));
         })
 }
 
