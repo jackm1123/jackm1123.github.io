@@ -1,6 +1,3 @@
-// TODO:
-// May need to reformat dates to be a bit neater
-
 /* UTILITIES */
 
 // Turn an array into a shorter evenly spaced array with n elements
@@ -30,11 +27,18 @@ function evenlyPickItemsFromArray(allItems, neededCount) {
     return result;
 }
 
-// Function to normalize the data var to a limited size
+// Function to normalize the data var to a limited number of data points
+// Also only show every other date to not crowd
 function normalizeData(data, size) {
+    // modify the labels to be of length 'size'
     data.labels = evenlyPickItemsFromArray(data.labels, size);
-    for (i = 0; i < data.series.length; i++) {
+    // modify each series (exercise) to be of length 'size'
+    for (let i = 0; i < data.series.length; i++) {
         data.series[i] = evenlyPickItemsFromArray(data.series[i], size);
+    }
+    // get rid of every other date so they don't crowd each other in presentation
+    for (let i = 0; i < size; i+=2) {
+        data.labels[i] = "";
     }
 }
 
@@ -404,6 +408,5 @@ async function chart_and_animate() {
     // we do this after the drawing has finished so set a few second timeout before removing drawing abilities
     setTimeout(function() { chart.off('created'); chart.off('draw');}, 2500);
 }
-
 
 chart_and_animate();
