@@ -174,3 +174,18 @@ body {
     height:75px;
     display:inline-block;
 }
+
+/* Tooltip plugin */
+.chartist-tooltip {
+    opacity: 0;
+    position: absolute;
+    margin: 20px 0 0 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #FFF;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.chartist-tooltip.tooltip-show {
+    opacity: 1;
+}

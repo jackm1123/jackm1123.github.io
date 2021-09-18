@@ -304,6 +304,11 @@ async function chart_and_animate() {
         plugins: [
             Chartist.plugins.legend({
                 legendNames: ['Bench Press', 'Squat', 'Shoulder Press', 'Pulldown', 'Weight'],
+            }),
+            Chartist.plugins.tooltip({
+                transformTooltipTextFnc: function(tooltip) {
+                    return Math.round(tooltip);
+                  }
             })
         ],
         lineSmooth: Chartist.Interpolation.cardinal({
