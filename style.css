@@ -3,8 +3,10 @@
     --color1: #F75590;
     --color2: #81C14B;
     --color3: #FF6700;
-    --color4: #7DBBC3;
+    --color4: #592E83;
+    --color5: #7DBBC3;
 }
+/* Color scheme from coolors.co */
 
   /* Chart styling */
 
@@ -27,6 +29,10 @@
 
 .ct-series-d .ct-bar, .ct-series-d .ct-line, .ct-series-d .ct-point, .ct-series-d .ct-slice-donut {
     stroke: var(--color4);
+}
+
+.ct-series-e .ct-bar, .ct-series-e .ct-line, .ct-series-e .ct-point, .ct-series-e .ct-slice-donut {
+    stroke: var(--color5);
 }
 
 .ct-chart {
@@ -94,6 +100,11 @@
     border-color: var(--color4);
 }
 
+.ct-legend .ct-series-4:before {
+    background-color: var(--color5);
+    border-color: var(--color5);
+}
+
 /* Page styling */
 
 body {
@@ -130,6 +141,10 @@ body {
 
 .column4 {
     background-color: var(--color4);
+}
+
+.column5 {
+    background-color: var(--color5);
 }
 
 /* Clear floats after the columns */

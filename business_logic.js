@@ -130,6 +130,7 @@ function objects_to_series(object_array) {
     let bench = [];
     let squat = [];
     let shoulder_press = [];
+    let pulldown = [];
     let weight = [];
 
     for (entry of object_array) {
@@ -138,11 +139,12 @@ function objects_to_series(object_array) {
         bench.push(entry.bench_max);
         squat.push(entry.squat_max);
         shoulder_press.push(entry.shoulder_max);
+        pulldown.push(entry.pulldown_max);
         weight.push(entry.bodyweight);
     }
     return {
         labels: labels,
-        series: [bench, squat, shoulder_press, weight]
+        series: [bench, squat, shoulder_press, pulldown, weight]
     }
     // format of data
     /*
@@ -152,6 +154,7 @@ function objects_to_series(object_array) {
             [5, 5, 10, 8, 7, 5, 4, null, null, null, 10, 10, 7, 8, 6, 9, null, null, 8, 5, 6, 10,  11, 11, 11],
             [10, 15, null, 12, null, 10, 12, 15, null, null, 12, null, 14, null, null, null, 15, 15, 16, 17, null, null, 18, 19, 20],
             [null, null, null, null, 3, 4, 1, 3, 4,  6,  7,  9, 5, null, null, null, null, 6, 6, 5, 4, 5, 4, null, 8],
+            [null, 15, null, 13, 17, 11, 12, 11, null, null, null, 17, 17, null, null, null, 18, 19, 20, 21, 22, 22, 21, 20, null],
             [null, 15, null, 13, 17, 11, 12, 11, null, null, null, 17, 17, null, null, null, 18, 19, 20, 21, 22, 22, 21, 20, null]
         ]
     };
@@ -160,18 +163,11 @@ function objects_to_series(object_array) {
 
 function fill_in_gaps(objs_series) {
 
-    for (let i = 1; i < objs_series["series"][0].length; i++) {
-        if (objs_series["series"][0][i] === null) {
-            objs_series["series"][0][i] = objs_series["series"][0][i - 1]
-        }
-        if (objs_series["series"][1][i] === null) {
-            objs_series["series"][1][i] = objs_series["series"][1][i - 1]
-        }
-        if (objs_series["series"][2][i] === null) {
-            objs_series["series"][2][i] = objs_series["series"][2][i - 1]
-        }
-        if (objs_series["series"][3][i] === null) {
-            objs_series["series"][3][i] = objs_series["series"][3][i - 1]
+    for (let series_index = 0; series_index <  objs_series["series"].length; series_index++) {
+        for (let i = 1; i < objs_series["series"][0].length; i++) {
+            if (objs_series["series"][series_index][i] === null) {
+                objs_series["series"][series_index][i] = objs_series["series"][series_index][i - 1]
+            }
         }
     }
     
@@ -201,6 +197,7 @@ function fetch_data() {
             let benchpresses = [];
             let shoulderpresses = [];
             let squats = [];
+            let pulldowns = [];
             for (entry of cont) {
                 if (entry.Exercise === "Bench Press") {
                     benchpresses.push(entry);
@@ -211,11 +208,15 @@ function fetch_data() {
                 else if (entry.Exercise === "Squat") {
                     squats.push(entry);
                 }
+                else if (entry.Exercise === "Pulldown") {
+                    pulldowns.push(entry);
+                }
             }
             // map each bench to the calculated max and take the projected or actual max
             document.getElementById("benchpress").innerText = get_max_overall(benchpresses);
             document.getElementById("squat").innerText = get_max_overall(squats);
             document.getElementById("shoulderpress").innerText = get_max_overall(shoulderpresses);
+            document.getElementById("pulldown").innerText = get_max_overall(pulldowns);
 
 
             let arr = cont;
@@ -224,9 +225,11 @@ function fetch_data() {
 
             let dates_and_maxes = [];
 
+            // Manually enter first element
             let curr_bench_max = null;
             let curr_squat_max = null;
             let curr_shoulder_max = null;
+            let curr_pulldown_max = null;
             let curr_obj  = {};
             let curr_date = arr[0]['Start Date (UTC)'];
             curr_obj.bodyweight = parseFloat(arr[0]['BodyWeight']);
@@ -234,6 +237,7 @@ function fetch_data() {
             curr_obj.bench_max = curr_bench_max;
             curr_obj.squat_max = curr_squat_max;
             curr_obj.shoulder_max = curr_shoulder_max;
+            curr_obj.pulldown_max = curr_pulldown_max;
             for (elem of arr) {
                 // if we're on the same date
                 // cycle through our sets and update maxes
@@ -253,6 +257,11 @@ function fetch_data() {
                             curr_obj.shoulder_max = calc_max(elem.Weight, elem.Reps);
                         }
                     }
+                    if (elem.Exercise === "Pulldown") {
+                        if (calc_max(elem.Weight, elem.Reps) > curr_obj.pulldown_max) {
+                            curr_obj.pulldown_max = calc_max(elem.Weight, elem.Reps);
+                        }
+                    }
                 } else {
                     // if we've arrived at a new date, push yesterday and reset
                     dates_and_maxes.push(curr_obj);
@@ -263,12 +272,15 @@ function fetch_data() {
                     curr_obj.bench_max = null;
                     curr_obj.squat_max = null;
                     curr_obj.shoulder_max = null;
+                    curr_obj.pulldown_max = null;
                     if (elem.Exercise === "Bench Press") {
                         curr_obj.bench_max = calc_max(elem.Weight, elem.Reps);
                     } else if (elem.Exercise === "Squat") {
                         curr_obj.squat_max = calc_max(elem.Weight, elem.Reps);
                     } else if (elem.Exercise === "Overhead Press") {
                         curr_obj.squat_max = calc_max(elem.Weight, elem.Reps);
+                    } else if (elem.Exercise === "Pulldown") {
+                        curr_obj.pulldown_max = calc_max(elem.Weight, elem.Reps);
                     }
                 }
             }
@@ -291,7 +303,7 @@ async function chart_and_animate() {
         },
         plugins: [
             Chartist.plugins.legend({
-                legendNames: ['Bench Press', 'Squat', 'Shoulder Press', 'Weight'],
+                legendNames: ['Bench Press', 'Squat', 'Shoulder Press', 'Pulldown', 'Weight'],
             })
         ],
         lineSmooth: Chartist.Interpolation.cardinal({
