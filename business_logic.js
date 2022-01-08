@@ -242,22 +242,22 @@ function fetch_data() {
                 // if we're on the same date
                 // cycle through our sets and update maxes
                 if (elem['Start Date (UTC)'] === curr_date) {
-                    if (elem.Exercise === "Bench Press") {
+                    if (elem.Exercise === "Bench Press" && elem.Status == "Done") {
                         if (calc_max(elem.Weight, elem.Reps) > curr_obj.bench_max) {
                             curr_obj.bench_max = calc_max(elem.Weight, elem.Reps);
                         }
                     }
-                    if (elem.Exercise === "Squat") {
+                    if (elem.Exercise === "Squat" && elem.Status == "Done") {
                         if (calc_max(elem.Weight, elem.Reps) > curr_obj.squat_max) {
                             curr_obj.squat_max = calc_max(elem.Weight, elem.Reps);
                         }
                     }
-                    if (elem.Exercise === "Overhead Press") {
+                    if (elem.Exercise === "Overhead Press" && elem.Status == "Done") {
                         if (calc_max(elem.Weight, elem.Reps) > curr_obj.shoulder_max) {
                             curr_obj.shoulder_max = calc_max(elem.Weight, elem.Reps);
                         }
                     }
-                    if (elem.Exercise === "Pulldown") {
+                    if (elem.Exercise === "Pulldown" && elem.Status == "Done") {
                         if (calc_max(elem.Weight, elem.Reps) > curr_obj.pulldown_max) {
                             curr_obj.pulldown_max = calc_max(elem.Weight, elem.Reps);
                         }
@@ -273,13 +273,13 @@ function fetch_data() {
                     curr_obj.squat_max = null;
                     curr_obj.shoulder_max = null;
                     curr_obj.pulldown_max = null;
-                    if (elem.Exercise === "Bench Press") {
+                    if (elem.Exercise === "Bench Press" && elem.Status == "Done") {
                         curr_obj.bench_max = calc_max(elem.Weight, elem.Reps);
-                    } else if (elem.Exercise === "Squat") {
+                    } else if (elem.Exercise === "Squat" && elem.Status == "Done") {
                         curr_obj.squat_max = calc_max(elem.Weight, elem.Reps);
-                    } else if (elem.Exercise === "Overhead Press") {
+                    } else if (elem.Exercise === "Overhead Press" && elem.Status == "Done") {
                         curr_obj.squat_max = calc_max(elem.Weight, elem.Reps);
-                    } else if (elem.Exercise === "Pulldown") {
+                    } else if (elem.Exercise === "Pulldown" && elem.Status == "Done") {
                         curr_obj.pulldown_max = calc_max(elem.Weight, elem.Reps);
                     }
                 }
