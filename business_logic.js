@@ -40,6 +40,18 @@ function normalizeData(data, size) {
     for (let i = 0; i < size; i+=2) {
         data.labels[i] = "";
     }
+    /*
+    // commenting this out since no space for the year in the text. maybe replace the december with the new year
+    // we want to call out what year it is when we cycle from the end of one to the beginning of the next
+    const months = "JanFebMarAprMayJunJulAugSepOctNovDec";
+    newYear = 2022;
+    for (let i = 2; i < size; i++) {
+        if (months.indexOf(data.labels[i].split(' ')[0]) < months.indexOf(data.labels[i-2].split(' ')[0])) {
+        	data.labels[i-1] = newYear.toString();
+        	newYear++;
+        }
+    }
+    */
 }
 
 // Function to calculate the 1 rep max based on weight and reps
@@ -179,7 +191,8 @@ function fill_in_gaps(objs_series) {
 // Return a promise to fetch thearse csv data, parse the csv data and make graphable
 function fetch_data() {
     // use a cors header proxy to get the google sheets csv
-    const proxy = "https://api.allorigins.win/get?url=";
+    const proxy = "https://api.codetabs.com/v1/proxy/?quest=";
+    // maybe more https://gist.github.com/jimmywarting/ac1be6ea0297c16c477e17f8fbe51347
     const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgea157RpJMjcWTrTX_nanhQ0dtVBaXvehQmxYojLgRoUMV_hQZ5JfVrTdCcCT520kSTTh891Q89YD/pub?gid=719380801&single=true&output=csv"; 
 
     return fetch(proxy + url)
@@ -188,10 +201,14 @@ function fetch_data() {
         }).then(function(contents) {
             // first parse the table into usable objects
             let parser = new DOMParser();
-            let cont = tableToJson(parser.parseFromString(contents, "text/html").getElementsByTagName("table")[0]);
+            // if the cors proxy returns html not actual csv use uncomment the line below
+
+            //let cont = tableToJson(parser.parseFromString(contents, "text/html").getElementsByTagName("table")[0]);
+            
             // if the cors returns an actual csv object not html use the method below
-            // var cont = csvJSON(contents);
-            // console.log(cont);
+            let cont = csvJSON(contents);
+            
+            //console.log(cont);
             const bw = cont[cont.length - 1].BodyWeight;
             document.getElementById("bodyweight").innerText = bw;
             let benchpresses = [];
