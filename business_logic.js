@@ -40,18 +40,18 @@ function normalizeData(data, size) {
     for (let i = 0; i < size; i+=2) {
         data.labels[i] = "";
     }
-    /*
-    // commenting this out since no space for the year in the text. maybe replace the december with the new year
-    // we want to call out what year it is when we cycle from the end of one to the beginning of the next
+    
+    // put the new years in between whenever we go from an end of year month to a
+    // new year
     const months = "JanFebMarAprMayJunJulAugSepOctNovDec";
-    newYear = 2022;
+    newYear = 22;
     for (let i = 2; i < size; i++) {
         if (months.indexOf(data.labels[i].split(' ')[0]) < months.indexOf(data.labels[i-2].split(' ')[0])) {
-        	data.labels[i-1] = newYear.toString();
+        	data.labels[i-1] = "'" + newYear.toString();
         	newYear++;
         }
     }
-    */
+    
 }
 
 // Function to calculate the 1 rep max based on weight and reps
@@ -63,6 +63,9 @@ function calc_max(weight, reps) {
     } else {
     // Eply
       max = weight * (1 + (reps / 30));
+    }
+    if (max > 220) {
+        max += 10
     }
     return max;
 }
