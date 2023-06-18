@@ -64,7 +64,7 @@ function calc_max(weight, reps) {
     // Eply
       max = weight * (1 + (reps / 30));
     }
-    if (max > 220) {
+    if (max > 220 && reps > 2) {
         max += 10
     }
     return max;
