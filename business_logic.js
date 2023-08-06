@@ -58,13 +58,16 @@ function normalizeData(data, size) {
 function calc_max(weight, reps) {
     let max;
     // Brzycki
-    if (reps < 10) {
-      max = weight * (36 / (37-reps)); // will work for actual 1RM
+    //if (reps <= 1) {
+    //  max = weight * (36 / (37-reps)); // will work for actual 1RM
+    if (reps === 1) {
+        return weight;
     } else {
     // Eply
       max = weight * (1 + (reps / 30));
     }
-    if (max > 220 && reps > 2) {
+    // bandaid for the slow, light reps
+    if (reps >= 10 && weight <= 160) {
         max += 10
     }
     return max;
