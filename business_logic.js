@@ -55,7 +55,7 @@ function normalizeData(data, size) {
 }
 
 // Function to calculate the 1 rep max based on weight and reps
-function calc_max(weight, reps) {
+function calc_max(weight, reps, date=null) {
     let max;
     // Brzycki
     if (reps <= 1) {
@@ -64,6 +64,18 @@ function calc_max(weight, reps) {
     } else {
     // Eply
         max = weight * (1 + (reps / 30));
+    }
+
+    // Issue here is starting in Jan 2023 I started partial larsen bench press
+    // So it needs about a 15 pound boost when after 2022
+    console.log(date)
+    if (date != null && reps >= 10) {
+        year = date.split('/').pop()
+        console.log(year)
+        if (year > 2022) {
+            max += 15
+            console.log(max)
+        }
     }
 
     return max;
@@ -262,8 +274,8 @@ function fetch_data() {
                 // cycle through our sets and update maxes
                 if (elem['Start Date (UTC)'] === curr_date) {
                     if (elem.Exercise === "Bench Press" && elem.Status == "Done") {
-                        if (calc_max(elem.Weight, elem.Reps) > curr_obj.bench_max) {
-                            curr_obj.bench_max = calc_max(elem.Weight, elem.Reps);
+                        if (calc_max(elem.Weight, elem.Reps, curr_date) > curr_obj.bench_max) {
+                            curr_obj.bench_max = calc_max(elem.Weight, elem.Reps, curr_date);
                         }
                     }
                     if (elem.Exercise === "Squat" && elem.Status == "Done") {
@@ -293,7 +305,7 @@ function fetch_data() {
                     curr_obj.shoulder_max = null;
                     curr_obj.pulldown_max = null;
                     if (elem.Exercise === "Bench Press" && elem.Status == "Done") {
-                        curr_obj.bench_max = calc_max(elem.Weight, elem.Reps);
+                        curr_obj.bench_max = calc_max(elem.Weight, elem.Reps, curr_date);
                     } else if (elem.Exercise === "Squat" && elem.Status == "Done") {
                         curr_obj.squat_max = calc_max(elem.Weight, elem.Reps);
                     } else if (elem.Exercise === "Overhead Press" && elem.Status == "Done") {
