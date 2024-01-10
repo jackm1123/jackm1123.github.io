@@ -68,13 +68,10 @@ function calc_max(weight, reps, date=null) {
 
     // Issue here is starting in Jan 2023 I started partial larsen bench press
     // So it needs about a 15 pound boost when after 2022
-    console.log(date)
     if (date != null && reps >= 10) {
         year = date.split('/').pop()
-        console.log(year)
         if (year > 2022) {
             max += 15
-            console.log(max)
         }
     }
 
