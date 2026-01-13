@@ -201,12 +201,11 @@ function fill_in_gaps(objs_series) {
 
 // Return a promise to fetch thearse csv data, parse the csv data and make graphable
 function fetch_data() {
-    // use a cors header proxy to get the google sheets csv
-    const proxy = "https://corsproxy.io/?";
-    // maybe more https://gist.github.com/jimmywarting/ac1be6ea0297c16c477e17f8fbe51347
+    // google docs doesn't need cors. but just opening index.html in browser will use strict cors
+    // instead to test locally, run python3 -m http.server 8000 in terminal at dir and go to http://localhost:8000
     const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgea157RpJMjcWTrTX_nanhQ0dtVBaXvehQmxYojLgRoUMV_hQZ5JfVrTdCcCT520kSTTh891Q89YD/pub?gid=719380801&single=true&output=csv"; 
 
-    return fetch(proxy + url)
+    return fetch(url)
         .then(function(data) { 
             return data.text();
         }).then(function(contents) {
