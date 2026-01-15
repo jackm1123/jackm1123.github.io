@@ -277,6 +277,25 @@ function fetch_data() {
                     if (elem.Exercise === "Squat" && elem.Status == "Done") {
                         if (calc_max(elem.Weight, elem.Reps) > curr_obj.squat_max) {
                             curr_obj.squat_max = calc_max(elem.Weight, elem.Reps);
+
+                            // normalize discrepancy between projected max and what I determined
+                            // empirically at the time
+                            if (curr_obj.squat_max > 290 && curr_obj.squat_max < 300) {
+                                curr_obj.squat_max = curr_obj.squat_max - 7;
+                            }
+                            else if (curr_obj.squat_max >= 300) {
+                                curr_obj.squat_max = curr_obj.squat_max - 18;
+                            }
+
+                            // December 6 2025 achieved 315. If after that day,
+                            // plateau. The subsequent squat sets aren't indicative
+                            // of full effort or max.
+                            cutoff_date = new Date("12/6/2025")
+                            curr_date_object = new Date(curr_date)
+                            if (curr_date_object > cutoff_date) {
+                                curr_obj.squat_max = 315.0
+                            }
+                            
                         }
                     }
                     if (elem.Exercise === "Overhead Press" && elem.Status == "Done") {
